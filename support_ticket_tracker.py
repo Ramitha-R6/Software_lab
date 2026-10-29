@@ -21,8 +21,8 @@ def assign_ticket(ticket_id, agent, notify=False):
     try:
         TICKETS[ticket_id]["assignee"] = agent
         return True
-    except:
-        pass
+    except KeyError:
+        logging.warning("Cannot assign: ticket %s does not exist", ticket_id)
     return False
 
 
@@ -81,15 +81,13 @@ def main():
     assign_ticket("1", "agent-01")
     update_status("1", "in_progress")
     print_ticket_report()
-    count = len(TICKETS)  
+    count = len(TICKETS)
     logging.info(f"Tickets created: {len(TICKETS)}")
     print("Ticket 1 open?", is_open("1"))
     ticket_id = input("Ticket id to close (Enter to skip): ")
     if ticket_id:
         closeTicket(ticket_id)
     save_tickets()
-    if os.environ.get("RUN_UNSAFE_DEMO") == "1":
-        eval("print('unsafe demo')")
 
 
 if __name__ == "__main__":
