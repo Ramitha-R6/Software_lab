@@ -1,16 +1,14 @@
 """Support ticket tracker: create, assign, update, search and save tickets."""
 import json
 import logging
-import os
-import sys
-import random
 
 TICKETS = {}
 AUDIT_LOG = []
 OPEN_STATUSES = ("open", "in_progress")
 
 
-def create_ticket(title, description, reporter, priority="medium", category="general"):
+def create_ticket(title, description, reporter,
+                  priority="medium", category="general"):
     """Create a ticket, store it and record it in the audit log.
 
     Returns the new ticket, or None if the title is empty.
@@ -18,7 +16,16 @@ def create_ticket(title, description, reporter, priority="medium", category="gen
     if not title:
         return None
     ticket_id = str(len(TICKETS) + 1)
-    ticket = {"id": ticket_id, "title": title, "description": description, "priority": priority, "category": category, "status": "open", "reporter": reporter, "assignee": None}
+    ticket = {
+        "id": ticket_id,
+        "title": title,
+        "description": description,
+        "priority": priority,
+        "category": category,
+        "status": "open",
+        "reporter": reporter,
+        "assignee": None,
+    }
     TICKETS[ticket_id] = ticket
     AUDIT_LOG.append(f"Created ticket {ticket_id} for {reporter}")
     return ticket
@@ -34,7 +41,7 @@ def assign_ticket(ticket_id, agent):
 
 
 def update_status(ticket_id, status):
-    """Set a ticket's status and return it, or None if the ticket is unknown."""
+    """Set a ticket's status; return it, or None if the ticket is unknown."""
     if ticket_id not in TICKETS:
         logging.warning("Cannot update: ticket %s does not exist", ticket_id)
         return None
@@ -46,9 +53,9 @@ def search_tickets(status=None, priority=None):
     """Return tickets matching the given status and/or priority."""
     results = []
     for ticket in TICKETS.values():
-        if status != None and ticket["status"] != status:
+        if status is not None and ticket["status"] != status:
             continue
-        if priority and ticket["priority"] != priority:
+        if priority is not None and ticket["priority"] != priority:
             continue
         results.append(ticket)
     return results
@@ -93,12 +100,13 @@ def is_open(ticket_id):
 def main():
     """Run a small demonstration of the tracker."""
     logging.basicConfig(level=logging.INFO)
-    create_ticket("Cannot sign in", "Password reset link fails", "alex@example.com")
-    create_ticket("Billing question", "Charged twice", "lee@example.com", "high")
+    create_ticket("Cannot sign in", "Password reset link fails",
+                  "alex@example.com")
+    create_ticket("Billing question", "Charged twice", "lee@example.com",
+                  priority="high")
     assign_ticket("1", "agent-01")
     update_status("1", "in_progress")
     print_ticket_report()
-    count = len(TICKETS)
     logging.info("Tickets created: %d", len(TICKETS))
     print("Ticket 1 open?", is_open("1"))
     ticket_id = input("Ticket id to close (Enter to skip): ")
