@@ -1,0 +1,20 @@
+PS C:\Users\Ramitha.R\Downloads\SE_LAB\LAB6> coverage run --branch -m pytest BranchCoverageTest_course_registration_application.py
+============================= test session starts =============================
+platform win32 -- Python 3.12.6, pytest-9.1.1, pluggy-1.6.0
+rootdir: C:\Users\Ramitha.R\Downloads\SE_LAB\LAB6
+plugins: anyio-4.13.0, cov-7.1.0
+collected 31 items
+
+BranchCoverageTest_course_registration_application.py .................. [ 58%]
+.............                                                            [100%]
+
+============================= 31 passed in 0.14s ==============================
+
+PS C:\Users\Ramitha.R\Downloads\SE_LAB\LAB6> coverage report -m
+Name                                                    Stmts   Miss Branch BrPart  Cover   Missing
+---------------------------------------------------------------------------------------------------
+BranchCoverageTest_course_registration_application.py      70      0      0      0   100%
+course_registration.py                                     32      0     24      0   100%
+---------------------------------------------------------------------------------------------------
+TOTAL                                                     102      0     24      0   100%
+
